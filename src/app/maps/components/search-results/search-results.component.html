@@ -14,11 +14,12 @@
     <button
       type="button"
       class="btn btn-outline-secondary btn-sm"
+      (click)="getDirections(place)"
       [ngClass]="
         place.id === selectedId ? 'btn-outline-light' : 'btn-outline-secondary'
       "
     >
-      Location
+      Directions
     </button>
   </li>
 </ul>

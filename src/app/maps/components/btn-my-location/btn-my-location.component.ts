@@ -16,6 +16,6 @@ export class BtnMyLocationComponent {
     if(!this.placesService.isUserLocationReady) throw Error('No location set');
     if(!this.mapsService.isMapReady) throw Error('Map is not ready');
 
-    this.mapsService.flyTo(this.placesService.useLocation!);
+    this.mapsService.flyTo(this.placesService.userLocation!);
   }
 }

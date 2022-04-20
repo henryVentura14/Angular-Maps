@@ -6,12 +6,12 @@ import { MapsService } from './maps.service';
   providedIn: 'root',
 })
 export class PlacesService {
-  public useLocation?: [number, number];
+  public userLocation?: [number, number];
   public isLoading?: boolean = false;
   public places: Feature[] = [];
 
   get isUserLocationReady(): boolean {
-    return !!this.useLocation;
+    return !!this.userLocation;
   }
 
   constructor(
@@ -25,11 +25,11 @@ export class PlacesService {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          this.useLocation = [
+          this.userLocation = [
             position.coords.longitude,
             position.coords.latitude,
           ];
-          resolve(this.useLocation);
+          resolve(this.userLocation);
         },
         (error) => {
           reject(error);
@@ -43,18 +43,23 @@ export class PlacesService {
       this.places = [];
       return;
     }
-    if (!this.useLocation) throw Error('Location is not ready');
+    if (!this.userLocation) throw Error('Location is not ready');
     this.isLoading = true;
     this.placesApi
       .get<PlacesResponse>(`/${query}.json`, {
         params: {
-          proximity: this.useLocation?.join(','),
+          proximity: this.userLocation?.join(','),
         },
       })
       .subscribe((res) => {
         this.isLoading = false;
         this.places = res.features;
-        this.mapsService.createMarkersFromPlaces(this.places, this.useLocation!);
+        this.mapsService.createMarkersFromPlaces(this.places, this.userLocation!);
       });
   }
+
+  deletePLaces() {
+    this.places = [];
+  }
+
 }

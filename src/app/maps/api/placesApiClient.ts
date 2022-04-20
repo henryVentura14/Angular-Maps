@@ -30,6 +30,7 @@ export class PlacesApiClient extends HttpClient {
         limit: 5,
         language: 'en',
         access_token: environment.apiKey,
+        ...options.params
       },
     });
   }
